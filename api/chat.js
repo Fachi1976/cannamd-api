@@ -51,13 +51,14 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-5-5',
-        max_tokens: 1024,
+        max_tokens: 2048,
         system: enrichedSystem,
         messages: messages
       })
     });
 
     const data = await response.json();
+    if (data.content) data.content = data.content.filter(b => b.type === 'text');
     return res.status(200).json(data);
 
   } catch (error) {
